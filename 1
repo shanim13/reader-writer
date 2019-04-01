@@ -1,0 +1,12 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <pthread.h>
+#include <time.h>
+#include <unistd.h>
+
+#define SIZE_BUFF 10		/* Size of shared buffer */
+
+int buffer[SIZE_BUFF];  	/* shared buffer */
+int rear = 0;  			/* place to add next element */
+int front = -1; 			/* place to remove next element */
+int count = 0;  		/* number elements in buffer */
