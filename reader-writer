@@ -1,0 +1,29 @@
+#include<stdio.h>
+#include<unistd.h>
+#include<semaphore.h>
+#include<pthread.h>
+
+int rc =0, data= 0;
+sem_t mutex, wr;
+void *reader(void *arg){
+   sem_wait(&mutex);
+   rc++;
+   if(rc==1)
+   sem_wait(&wr);
+   sem_post(&mutex);
+   printf("Reader %d read data %d\n",arg,data);
+   sleep(1);
+   sem_wait(&mutex);
+   rc--;
+   if(rc==0)
+   sem_post(&wr);
+   sem_post(&mutex);
+}
+
+void *writer(void *arg){
+   sem_wait(&wr);
+   data++;
+   printf("Writer %d has written data %d\n",arg,data);
+   sleep(1);
+   sem_post(&wr);
+}
